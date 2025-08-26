@@ -8,12 +8,14 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
+import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,4 +105,64 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total, records);
     }
 
+    /**
+     * 启用禁用员工账号
+     *
+     * @param status
+     * @param id
+     */
+    public void startOrStop(Integer status, Long id) {
+        Employee employee = Employee.builder().id(id).status(status).updateTime(LocalDateTime.now()).updateUser(BaseContext.getCurrentId()).build();
+        System.out.println(employee);
+        employeeMapper.update(employee);
+    }
+
+
+    /**
+     * 根据id查询员工
+     *
+     * @param id
+     * @return
+     */
+    public Employee getById(Long id) {
+        return employeeMapper.getById(id);
+    }
+
+    /**
+     * 修改员工信息
+     *
+     * @param employeeDTO
+     */
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+    }
+
+
+    /**
+     * 修改密码
+     *
+     * @param passwordEditDTO
+     */
+    public void updatePassword(PasswordEditDTO passwordEditDTO) {
+        Long id = passwordEditDTO.getEmpId();
+        String oldPassword = passwordEditDTO.getOldPassword();
+        String newPassword = passwordEditDTO.getNewPassword();
+        Employee employee = employeeMapper.getById(id);
+        if (employee == null) {
+            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
+        oldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
+        if (!oldPassword.equals(employee.getPassword())) {
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+        }
+        newPassword = DigestUtils.md5DigestAsHex(newPassword.getBytes());
+        employee.setPassword(newPassword);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+    }
 }

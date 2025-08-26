@@ -4,11 +4,13 @@ import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
+import com.sky.utils.CookieUtils;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
@@ -17,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,6 +94,40 @@ public class EmployeeController {
         log.info("员工分页查询：{}", employeePageQueryDTO);
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
+    }
+
+
+    @PostMapping("/status/{status}")
+    @ApiOperation(value = "启用禁用员工账号")
+    public Result startOrStop(@PathVariable Integer status, Long id) {
+        log.info("启用禁用员工账号：{}", status, id);
+        employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据id查询员工")
+    public Result<Employee> getById(@PathVariable Long id) {
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "修改员工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
+
+
+    @PutMapping("/editPassword")
+    @ApiOperation(value = "修改密码")
+    public Result updatePassword(HttpServletRequest request, @RequestBody PasswordEditDTO passwordEditDTO) {
+        Long userId = CookieUtils.getUserIdFromCookie(request);
+        passwordEditDTO.setEmpId(userId);
+        System.out.println(passwordEditDTO);
+        employeeService.updatePassword(passwordEditDTO);
+        return Result.success();
     }
 
 }
