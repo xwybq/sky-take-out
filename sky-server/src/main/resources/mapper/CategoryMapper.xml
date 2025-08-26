@@ -20,9 +20,9 @@
     <select id="list" resultType="Category">
         select * from category
         <where>
-            <if test="type != null and type !=0">type = #{type}</if>
+            <if test="type != null and type !=0">and type = #{type}</if>
         </where>
-        order by sort asc,createTime desc
+        order by sort asc,create_time desc
     </select>
 
     <select id="pageQuery" resultType="Category">

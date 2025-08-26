@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 自动填充切面类：通过AOP技术，在执行特定方法前自动填充公共字段
@@ -42,7 +43,7 @@ public class AutoFillAspect {
      * @param joinPoint 连接点对象，包含被拦截方法的信息（如参数、方法签名等）
      */
     @Before("autoFillPointcut()") // 关联到上面定义的切入点
-    public void autoFill(JoinPoint joinPoint) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void autoFill(JoinPoint joinPoint) {
         log.info("开始自动填充数据");
 
         // 1. 获取方法签名（包含方法的元数据）
@@ -59,7 +60,34 @@ public class AutoFillAspect {
         }
         // 假设方法的第一个参数是需要填充字段的实体对象（如Employee、Category等）
         Object entity = args[0];
+        if (entity instanceof List) {
+            log.info("开始自动填充数据");
+            ((List<?>) entity).forEach(e -> {
+                try {
+                    fillEntity(e, operationType);
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+        } else {
+            log.info("开始自动填充数据");
+            try {
+                fillEntity(entity, operationType);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
 
+
+    }
+
+    /**
+     * 填充实体对象的公共字段
+     *
+     * @param entity        实体对象（如Employee、Category等）
+     * @param operationType 操作类型（INSERT或UPDATE）
+     */
+    public void fillEntity(Object entity, OperationType operationType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         // 5. 准备需要填充的公共字段值
         LocalDateTime now = LocalDateTime.now(); // 当前时间（用于创建/修改时间）
         Long currentId = BaseContext.getCurrentId(); // 当前登录用户ID（从ThreadLocal中获取）
@@ -86,5 +114,6 @@ public class AutoFillAspect {
             entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class)
                     .invoke(entity, currentId);
         }
+
     }
 }
