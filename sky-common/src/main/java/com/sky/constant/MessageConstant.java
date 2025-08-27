@@ -5,6 +5,7 @@ package com.sky.constant;
  */
 public class MessageConstant {
 
+    public static final String DELETE_PARAM_IS_NULL = "删除参数为空";
     public static final String PASSWORD_ERROR = "密码错误";
     public static final String ACCOUNT_NOT_FOUND = "账号不存在";
     public static final String ACCOUNT_LOCKED = "账号被锁定";
@@ -23,6 +24,7 @@ public class MessageConstant {
     public static final String DISH_BE_RELATED_BY_SETMEAL = "当前菜品关联了套餐,不能删除";
     public static final String ORDER_STATUS_ERROR = "订单状态错误";
     public static final String ORDER_NOT_FOUND = "订单不存在";
-
+    public static final String SETMEAL_DISH_ON_DISABLE = "套餐下有菜品为停售状态，不能启售";
+    public static final String SETMEAL_DISH_NOT_FOUND = "套餐下没有菜品";
     public static final String USERNAME_EXIST = "用户名已存在";
 }
