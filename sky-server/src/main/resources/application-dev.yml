@@ -12,3 +12,10 @@ sky:
     access-key-id: LTAI5t7rnvWhPoH2aKQNDGtN
     access-key-secret: 383F0dsMV0R8xVDHmFWcJqxeBniPqo
     bucket-name: web-tlias-xwybq
+
+
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    database: 10
