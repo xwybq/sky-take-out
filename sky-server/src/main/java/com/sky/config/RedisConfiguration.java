@@ -22,11 +22,11 @@ public class RedisConfiguration {
         template.setKeySerializer(new StringRedisSerializer());
 
         // 设置值的序列化器（用JSON序列化器，支持所有类型）
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+//        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
         // 如果需要操作Hash结构，也需要设置对应的序列化器
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+//        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 
         template.afterPropertiesSet();
         log.info("redisTemplate初始化完成");
