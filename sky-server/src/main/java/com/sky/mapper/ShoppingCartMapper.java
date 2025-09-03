@@ -1,9 +1,12 @@
 package com.sky.mapper;
 
 import com.sky.entity.ShoppingCart;
+import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -15,7 +18,7 @@ public interface ShoppingCartMapper {
      *
      * @param shoppingCart
      */
-    List<ShoppingCart> list(ShoppingCart shoppingCart);
+    List<ShoppingCart> findShoppingCart(ShoppingCart shoppingCart);
 
 
     /**
@@ -34,4 +37,13 @@ public interface ShoppingCartMapper {
     @Insert("insert into sky_take_out.shopping_cart(name, image, user_id, dish_id, setmeal_id, dish_flavor, number, amount, create_time) VALUES " +
             "(#{name}, #{image}, #{userId}, #{dishId}, #{setmealId}, #{dishFlavor}, #{number}, #{amount}, #{createTime})")
     void insert(ShoppingCart shoppingCart);
+
+
+    /**
+     * 查询购物车
+     *
+     * @param shoppingCart
+     * @return
+     */
+    List<ShoppingCart> list(ShoppingCart shoppingCart);
 }
