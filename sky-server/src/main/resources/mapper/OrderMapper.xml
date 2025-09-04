@@ -69,7 +69,7 @@
         </where>
         order by order_time desc
     </select>
-    <select id="subByMap" resultType="java.lang.Double">
+    <select id="sumByMap" resultType="java.lang.Double">
         select sum(amount) from orders
         <where>
             <if test="begin != null">

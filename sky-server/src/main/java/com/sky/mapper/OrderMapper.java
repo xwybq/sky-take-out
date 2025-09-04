@@ -89,7 +89,7 @@ public interface OrderMapper {
      * @return
      */
 
-    Double subByMap(Map map);
+    Double sumByMap(Map map);
 
     /**
      * 根据map统计订单数量
