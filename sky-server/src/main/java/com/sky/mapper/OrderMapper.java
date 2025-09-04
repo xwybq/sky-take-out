@@ -88,4 +88,12 @@ public interface OrderMapper {
      */
 
     Double subByMap(Map map);
+
+    /**
+     * 根据map统计订单数量
+     *
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }
