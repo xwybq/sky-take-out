@@ -30,3 +30,9 @@ sky:
     weChatPayCertFilePath:
     notifyUrl:
     refundNotifyUrl:
+
+  shop:
+    address: 河南省驻马店市汝南县东官庄镇
+
+  baidu:
+    ak: WDH2iFmWRsjmwYQunq7JnI4cYNEidltf
