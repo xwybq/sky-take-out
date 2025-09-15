@@ -151,10 +151,7 @@ spring:
 
 **前端启动 (sky-front):**
 
-1. 进入前端目录: `cd sky-front`。
-2. 安装依赖: `npm install`。
-3. 启动开发服务器: `npm run dev`。
-4. 访问前端页面: `http://localhost:8081`。
+黑马已经打包部署到`nginx`服务器上，直接双击`nginx.exe`即可
 
 ## 项目特色与亮点
 
